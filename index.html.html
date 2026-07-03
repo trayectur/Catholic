@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trayectur — Viaje Espiritual</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Karla:wght@400;500;600;700&display=swap');
+
+:root{
+  --manto:#1B4B43;
+  --manto-dark:#0F332C;
+  --oro:#C9A227;
+  --oro-light:#E4C666;
+  --vela:#FBF3E0;
+  --rosa:#8B2635;
+  --tierra:#3A2A20;
+  --piedra:#F3E9D2;
+  --piedra-line:#DCC9A0;
+  --sombra: 0 10px 30px rgba(27,75,67,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Karla',sans-serif;
+  background:var(--vela);
+  color:var(--tierra);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(circle at 10% 15%, rgba(201,162,39,0.07), transparent 40%),
+    radial-gradient(circle at 90% 85%, rgba(27,75,67,0.08), transparent 45%);
+}
+h1,h2,h3,.display{font-family:'Cormorant Garamond',serif;}
+.hidden{display:none !important;}
+.app{max-width:560px;margin:0 auto;min-height:100vh;position:relative;}
+
+/* ---------- LANG TOGGLE ---------- */
+.lang-toggle{
+  position:fixed;top:14px;right:14px;z-index:70;
+  background:var(--manto);color:var(--vela);border:1px solid var(--oro);
+  padding:8px 14px;border-radius:20px;font-family:'Karla';font-weight:700;
+  font-size:12px;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* ---------- LANDING ---------- */
+.landing{padding:48px 24px 64px;display:flex;flex-direction:column;align-items:center;text-align:center;}
+.crest{
+  width:64px;height:64px;border-radius:50%;
+  border:2px solid var(--oro);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:22px;background:var(--manto);
+  box-shadow:0 0 0 5px rgba(201,162,39,0.15);
+}
+.crest svg{width:30px;height:30px;}
+.eyebrow{
+  font-family:'Karla',sans-serif;font-size:12px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--rosa);font-weight:700;margin-bottom:10px;
+}
+h1.title{font-size:44px;font-weight:700;color:var(--manto);line-height:1.05;margin-bottom:6px;}
+.subtitle{font-size:19px;font-style:italic;color:var(--rosa);margin-bottom:26px;font-family:'Cormorant Garamond',serif;}
+.welcome-copy{font-size:15.5px;line-height:1.65;color:var(--tierra);max-width:420px;margin-bottom:34px;}
+.welcome-copy strong{color:var(--manto);}
+
+.card{
+  width:100%;background:var(--piedra);
+  border:1px solid var(--piedra-line);
+  border-radius:4px;
+  padding:30px 26px;
+  box-shadow:var(--sombra);
+  position:relative;
+}
+.card::before{
+  content:'';position:absolute;top:10px;left:10px;right:10px;bottom:10px;
+  border:1px solid rgba(201,162,39,0.35);border-radius:2px;pointer-events:none;
+}
+.field{margin-bottom:16px;text-align:left;}
+.field label{
+  display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+  font-weight:700;color:var(--manto);margin-bottom:6px;
+}
+.field input{
+  width:100%;padding:12px 14px;border:1px solid var(--piedra-line);
+  border-radius:3px;background:#fff;font-family:'Karla';font-size:15px;color:var(--tierra);
+}
+.field input:focus{outline:2px solid var(--oro);outline-offset:1px;}
+.btn-primary{
+  width:100%;padding:14px;background:var(--manto);color:var(--vela);
+  border:none;border-radius:3px;font-family:'Karla';font-weight:700;
+  font-size:14px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;
+  margin-top:6px;transition:.15s;
+}
+.btn-primary:hover{background:var(--manto-dark);}
+.btn-primary:active{transform:scale(0.98);}
+.msg{font-size:13.5px;margin-top:12px;line-height:1.5;}
+.msg.error{color:var(--rosa);}
+.msg.ok{color:var(--manto);}
+.fineprint{font-size:12px;color:#9C8A63;margin-top:20px;line-height:1.6;max-width:380px;}
+
+/* ---------- ITINERARY ---------- */
+.itin-header{
+  background:var(--manto);color:var(--vela);padding:26px 24px 30px;
+  border-bottom:4px solid var(--oro);position:sticky;top:0;z-index:5;
+}
+.itin-header .row{display:flex;justify-content:space-between;align-items:flex-start;}
+.itin-header .greet{font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.75;margin-bottom:4px;}
+.itin-header h2{font-size:28px;font-weight:700;}
+.itin-header .dates{font-size:13px;opacity:0.85;margin-top:4px;font-family:'Karla';}
+.logout{
+  background:none;border:1px solid rgba(251,243,224,0.4);color:var(--vela);
+  padding:6px 12px;border-radius:20px;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;cursor:pointer;font-family:'Karla';font-weight:700;white-space:nowrap;
+}
+
+.camino{padding:30px 20px 60px;position:relative;}
+.camino::before{
+  content:'';position:absolute;left:44px;top:0;bottom:60px;width:2px;
+  background:repeating-linear-gradient(to bottom, var(--oro) 0 6px, transparent 6px 12px);
+}
+.day{position:relative;padding-left:64px;margin-bottom:6px;}
+.bead-wrap{position:absolute;left:0;top:0;width:44px;display:flex;justify-content:center;}
+.bead{
+  width:34px;height:34px;border-radius:50%;background:var(--vela);
+  border:2px solid var(--oro);display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond';font-weight:700;font-size:16px;color:var(--manto);
+  z-index:2;transition:.25s;
+}
+.day.open .bead{background:var(--oro);color:var(--manto-dark);box-shadow:0 0 0 5px rgba(201,162,39,0.2);}
+.day-card{
+  background:var(--piedra);border:1px solid var(--piedra-line);border-radius:4px;
+  margin-bottom:22px;overflow:hidden;box-shadow:0 4px 14px rgba(58,42,32,0.08);
+}
+.day-head{
+  padding:16px 18px;cursor:pointer;display:flex;justify-content:space-between;
+  align-items:center;gap:10px;
+}
+.day-head .dlabel{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rosa);font-weight:700;}
+.day-head h3{font-size:20px;color:var(--manto);font-weight:700;margin-top:2px;}
+.chev{color:var(--oro);font-size:18px;transition:.25s;flex-shrink:0;}
+.day.open .chev{transform:rotate(180deg);}
+.day-body{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+.day.open .day-body{max-height:900px;}
+.day-body-inner{padding:0 18px 20px;}
+.activity-list{list-style:none;margin-bottom:14px;}
+.activity-list li{
+  padding:9px 0 9px 20px;position:relative;font-size:14.5px;line-height:1.5;
+  border-top:1px solid rgba(220,201,160,0.5);
+}
+.activity-list li:first-child{border-top:none;}
+.activity-list li::before{content:'✦';position:absolute;left:0;top:9px;color:var(--oro);font-size:11px;}
+.note{
+  background:rgba(139,38,53,0.07);border-left:2px solid var(--rosa);
+  padding:9px 12px;font-size:13px;line-height:1.55;color:var(--rosa);margin:10px 0;border-radius:2px;
+}
+.reflect-btn{
+  background:none;border:1px solid var(--manto);color:var(--manto);
+  padding:9px 16px;border-radius:20px;font-family:'Karla';font-weight:700;
+  font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;margin-top:4px;
+}
+.reflect-btn:hover{background:var(--manto);color:var(--vela);}
+.reflection{
+  margin-top:12px;padding:14px 16px;background:var(--manto);color:var(--vela);
+  border-radius:3px;font-family:'Cormorant Garamond';font-style:italic;font-size:16.5px;
+  line-height:1.6;display:none;
+}
+.reflection.show{display:block;}
+
+.footer-note{text-align:center;padding:10px 24px 40px;font-size:12px;color:#9C8A63;line-height:1.6;}
+
+/* ---------- PLACE LINKS + MODAL ---------- */
+.place-link{color:var(--manto);font-weight:700;text-decoration:underline;text-decoration-color:var(--oro);text-decoration-thickness:2px;text-underline-offset:2px;cursor:pointer;}
+.place-link:hover{color:var(--rosa);}
+
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(15,51,44,0.55);
+  display:none;align-items:flex-end;justify-content:center;z-index:80;
+  padding:0;
+}
+.modal-overlay.show{display:flex;}
+.modal-sheet{
+  background:var(--vela);width:100%;max-width:560px;border-radius:16px 16px 0 0;
+  padding:28px 26px 34px;max-height:82vh;overflow-y:auto;
+  box-shadow:0 -10px 40px rgba(0,0,0,0.25);
+  animation:slideUp .25s ease;
+}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.modal-close{
+  float:right;background:none;border:none;font-size:22px;color:#9C8A63;cursor:pointer;line-height:1;
+}
+.modal-icon{
+  width:76px;height:76px;border-radius:50%;background:var(--manto);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 18px;
+  border:2px solid var(--oro);
+}
+.modal-icon svg{width:40px;height:40px;}
+.modal-sheet h3{font-size:26px;color:var(--manto);text-align:center;margin-bottom:14px;}
+.modal-sheet p{font-size:15px;line-height:1.7;color:var(--tierra);white-space:pre-line;}
+
+/* ---------- CLOSING ---------- */
+.closing{
+  margin:20px 20px 0;padding:26px 22px;background:var(--manto);color:var(--vela);
+  border-radius:6px;border:1px solid var(--oro);
+}
+.closing p{font-size:15px;line-height:1.75;margin-bottom:14px;opacity:0.95;font-family:'Cormorant Garamond';font-style:italic;}
+.closing p:last-child{margin-bottom:0;}
+
+/* ---------- CONTINUE BUTTON ---------- */
+.continue-wrap{padding:6px 20px 10px;}
+.continue-btn{
+  width:100%;padding:16px;background:var(--rosa);color:var(--vela);border:none;
+  border-radius:4px;font-family:'Karla';font-weight:700;font-size:13px;
+  letter-spacing:2px;text-transform:uppercase;cursor:pointer;
+}
+.continue-btn:active{transform:scale(0.99);}
+
+/* ---------- PRAYERS ---------- */
+.prayers-wrap{padding:20px 20px 6px;display:flex;flex-direction:column;gap:12px;}
+.prayer-card{
+  background:var(--piedra);border:1px solid var(--piedra-line);border-radius:4px;overflow:hidden;
+}
+.prayer-head{
+  padding:16px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;
+}
+.prayer-head h3{font-size:19px;color:var(--manto);font-weight:700;}
+.prayer-head .chev{color:var(--oro);font-size:18px;transition:.25s;}
+.prayer-card.open .chev{transform:rotate(180deg);}
+.prayer-body{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+.prayer-card.open .prayer-body{max-height:1400px;}
+.prayer-body-inner{padding:0 18px 18px;font-family:'Cormorant Garamond';font-size:17px;line-height:1.65;color:var(--tierra);white-space:pre-line;}
+.prayer-card.rosary-link .prayer-head h3{color:var(--rosa);}
+.prayer-card.rosary-link .prayer-head::after{content:'📿';font-size:16px;}
+
+/* ---------- INTERACTIVE ROSARY ---------- */
+.rosary-wrap{padding:16px 20px 50px;}
+.mystery-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;margin-bottom:14px;}
+.mystery-tab{
+  flex-shrink:0;padding:8px 14px;border-radius:20px;border:1px solid var(--piedra-line);
+  background:var(--piedra);font-family:'Karla';font-weight:700;font-size:11.5px;
+  letter-spacing:0.5px;text-transform:uppercase;color:var(--tierra);cursor:pointer;
+}
+.mystery-tab.active{background:var(--manto);color:var(--vela);border-color:var(--manto);}
+.mystery-list{background:var(--piedra);border:1px solid var(--piedra-line);border-radius:4px;padding:16px 18px;margin-bottom:22px;}
+.mystery-list .m-title{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--rosa);font-weight:700;margin-bottom:10px;}
+.mystery-list ol{padding-left:18px;}
+.mystery-list li{font-size:14.5px;line-height:1.6;margin-bottom:4px;color:var(--tierra);}
+.mystery-item{cursor:pointer;text-decoration:underline;text-decoration-color:var(--oro);text-decoration-thickness:2px;text-underline-offset:2px;}
+.mystery-item:hover{color:var(--rosa);}
+.rosary-complete{text-align:center;font-family:'Cormorant Garamond';font-style:italic;font-size:17px;color:var(--rosa);margin-top:10px;}
+
+.rosary-chain{display:flex;flex-direction:column;align-items:center;gap:10px;padding:10px 0 20px;}
+.rc-cross{
+  width:38px;height:50px;position:relative;cursor:pointer;margin-bottom:4px;
+}
+.rc-cross .bar1, .rc-cross .bar2{position:absolute;background:var(--piedra-line);border-radius:2px;}
+.rc-cross.filled .bar1, .rc-cross.filled .bar2{background:var(--oro);}
+.rc-cross .bar1{width:8px;height:50px;left:15px;top:0;}
+.rc-cross .bar2{width:30px;height:8px;left:4px;top:14px;}
+
+.rbead{
+  border-radius:50%;background:var(--vela);border:2px solid var(--piedra-line);cursor:pointer;transition:.15s;
+}
+.rbead.filled{background:var(--oro);border-color:var(--oro-light);box-shadow:0 0 8px rgba(201,162,39,0.5);}
+.rbead-lg{width:26px;height:26px;}
+.rbead-md{width:20px;height:20px;}
+.decade-row{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;max-width:220px;}
+.rbead-sm{width:16px;height:16px;}
+.decade-block{display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 0;}
+.rc-steplabel{font-size:12.5px;color:var(--tierra);text-align:center;margin-bottom:2px;}
+.rc-steplabel-sm{font-size:11.5px;color:#9C8A63;text-align:center;line-height:1.5;max-width:240px;}
+.rc-verlink{color:var(--rosa);font-weight:700;text-decoration:underline;text-decoration-color:var(--oro);cursor:pointer;}
+.letanias-toggle{
+  display:block;margin:20px auto 0;background:none;border:1px solid var(--piedra-line);
+  color:var(--manto);padding:10px 18px;border-radius:20px;font-family:'Karla';font-weight:700;
+  font-size:12px;letter-spacing:0.5px;text-transform:uppercase;cursor:pointer;
+}
+.letanias-panel{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+.letanias-panel.open{max-height:2400px;margin-top:14px;}
+.letanias-inner{
+  background:var(--piedra);border:1px solid var(--piedra-line);border-radius:4px;
+  padding:16px 18px;font-family:'Cormorant Garamond';font-size:15.5px;line-height:1.7;
+  white-space:pre-line;color:var(--tierra);
+}
+.decade-label{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--rosa);font-weight:700;}
+
+.rosary-progress{text-align:center;font-family:'Cormorant Garamond';font-size:18px;color:var(--manto);font-weight:700;margin-bottom:16px;}
+.reset-rosary{
+  display:block;margin:0 auto;background:none;border:1px solid var(--piedra-line);color:#9C8A63;
+  padding:8px 16px;border-radius:20px;font-family:'Karla';font-size:12px;cursor:pointer;
+}
+
+/* ---------- WHATSAPP CTA ---------- */
+.whatsapp-cta{margin:24px 20px 0;text-align:center;}
+.wa-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9C8A63;margin-bottom:10px;font-weight:700;}
+.wa-btn{
+  display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;
+  padding:15px 22px;border-radius:30px;font-family:'Karla';font-weight:700;font-size:13.5px;
+  text-decoration:none;box-shadow:0 6px 16px rgba(37,211,102,0.35);
+}
+</style>
+</head>
+<body>
+
+<button class="lang-toggle" id="lang-toggle" onclick="toggleLang()">EN</button>
+
+<div class="app">
+
+  <!-- LANDING / AUTH -->
+  <section id="screen-landing" class="landing">
+    <div class="crest">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#E4C666" stroke-width="1.4"><path d="M12 2 L14 9 L21 9 L15.5 13.5 L17.5 21 L12 16.5 L6.5 21 L8.5 13.5 L3 9 L10 9 Z"/></svg>
+    </div>
+    <div class="eyebrow" id="t-eyebrow"></div>
+    <h1 class="title">TRAYECTUR</h1>
+    <div class="subtitle" id="t-subtitle"></div>
+    <p class="welcome-copy" id="t-welcome"></p>
+
+    <div class="card">
+      <form id="form-register" onsubmit="return handleRegister(event)">
+        <div class="field">
+          <label id="t-namelabel" for="r-name"></label>
+          <input id="r-name" type="text" required autocomplete="name">
+        </div>
+        <div class="field">
+          <label id="t-emaillabel" for="r-email"></label>
+          <input id="r-email" type="email" required autocomplete="email">
+        </div>
+        <div class="field">
+          <label id="t-codelabel" for="r-code"></label>
+          <input id="r-code" type="text" required autocomplete="off">
+        </div>
+        <button class="btn-primary" type="submit" id="t-startbtn"></button>
+        <div id="register-msg"></div>
+      </form>
+    </div>
+
+    <p class="fineprint" id="t-fineprint"></p>
+  </section>
+
+  <!-- ITINERARY -->
+  <section id="screen-itinerary" class="hidden">
+    <div class="itin-header">
+      <div class="row">
+        <div>
+          <div class="greet" id="greet-name"></div>
+          <h2 id="t-caminotitle"></h2>
+          <div class="dates" id="t-dates"></div>
+        </div>
+        <button class="logout" onclick="handleLogout()" id="t-logout1"></button>
+      </div>
+    </div>
+
+    <div class="camino" id="camino"></div>
+
+    <div class="continue-wrap">
+      <button class="continue-btn" onclick="goTo('screen-prayers')" id="t-continueprayers"></button>
+    </div>
+
+    <p class="footer-note" id="t-footer1"></p>
+  </section>
+
+  <!-- PRAYERS OF THE DAY -->
+  <section id="screen-prayers" class="hidden">
+    <div class="itin-header">
+      <div class="row">
+        <div>
+          <div class="greet" id="t-prayersgreet"></div>
+          <h2 id="t-prayerstitle"></h2>
+        </div>
+        <button class="logout" onclick="goTo('screen-itinerary')" id="t-back1"></button>
+      </div>
+    </div>
+
+    <div class="prayers-wrap" id="prayers-wrap"></div>
+
+    <div class="continue-wrap">
+      <button class="continue-btn" onclick="goTo('screen-closing')" id="t-continuemore"></button>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE ROSARY -->
+  <section id="screen-rosary" class="hidden">
+    <div class="itin-header">
+      <div class="row">
+        <div>
+          <div class="greet" id="t-rosarygreet"></div>
+          <h2 id="t-rosarytitle"></h2>
+        </div>
+        <button class="logout" onclick="goTo('screen-prayers')" id="t-back2"></button>
+      </div>
+    </div>
+
+    <div class="rosary-wrap">
+      <div class="mystery-tabs" id="mystery-tabs"></div>
+      <div class="mystery-list" id="mystery-list"></div>
+      <div class="rosary-chain" id="rosary-chain"></div>
+      <div class="rosary-progress" id="rosary-progress"></div>
+      <button class="reset-rosary" onclick="resetRosary()" id="t-resetrosary"></button>
+
+      <button class="letanias-toggle" onclick="toggleLetanias()"><span id="letanias-toggle-label"></span></button>
+      <div class="letanias-panel" id="letanias-panel">
+        <div class="letanias-inner" id="letanias-inner"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section id="screen-closing" class="hidden">
+    <div class="itin-header">
+      <div class="row">
+        <div>
+          <div class="greet" id="t-closinggreet"></div>
+          <h2 id="t-closingtitle"></h2>
+        </div>
+        <button class="logout" onclick="goTo('screen-prayers')" id="t-back3"></button>
+      </div>
+    </div>
+
+    <div class="closing">
+      <p id="t-closingp1"></p>
+      <p id="t-closingp2"></p>
+    </div>
+
+    <div class="whatsapp-cta">
+      <div class="wa-label" id="t-walabel"></div>
+      <a class="wa-btn" id="wa-btn-link" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.79 14.06c-.24.68-1.4 1.31-1.93 1.36-.5.05-1.06.24-3.56-.74-3.01-1.19-4.94-4.27-5.09-4.47-.15-.2-1.22-1.63-1.22-3.1 0-1.48.78-2.2 1.05-2.5.27-.3.6-.37.8-.37.2 0 .4 0 .58.01.19.01.44-.07.68.53.25.6.85 2.07.92 2.22.07.15.12.33.02.53-.1.2-.15.32-.3.5-.15.17-.3.39-.44.52-.15.15-.3.3-.13.6.17.3.75 1.24 1.62 2.01 1.11.99 2.05 1.3 2.35 1.44.3.15.47.13.65-.08.17-.2.72-.84.92-1.13.2-.29.4-.24.68-.14.28.1 1.75.83 2.05.98.3.15.5.22.57.35.07.13.07.72-.17 1.4z"/></svg>
+        <span id="t-wabtn"></span>
+      </a>
+    </div>
+
+    <p class="footer-note" id="t-footer2"></p>
+  </section>
+
+  <!-- PLACE / INFO DETAIL MODAL -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closePlaceOnOverlay(event)">
+    <div class="modal-sheet">
+      <button class="modal-close" onclick="closePlace()">✕</button>
+      <div class="modal-icon" id="modal-icon"></div>
+      <h3 id="modal-title"></h3>
+      <p id="modal-blurb"></p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   LANGUAGE
+   ============================================================ */
+function detectLang(){
+  const navLang = ((navigator.language || navigator.userLanguage || 'es') + '').toLowerCase();
+  return navLang.startsWith('en') ? 'en' : 'es';
+}
+let LANG = detectLang();
+
+function toggleLang(){
+  LANG = (LANG === 'es') ? 'en' : 'es';
+  document.documentElement.setAttribute('lang', LANG);
+  document.getElementById('lang-toggle').textContent = (LANG === 'es') ? 'EN' : 'ES';
+  renderStaticText();
+  renderAllVisible();
+}
+function T(dict){ return dict[LANG]; }
+
+/* ============================================================
+   STATIC UI STRINGS
+   ============================================================ */
+const UI = {
+  eyebrow: {es:"Peregrinación · 9 al 14 de diciembre", en:"Pilgrimage · December 9–14"},
+  subtitle: {es:"Viaje Espiritual", en:"Spiritual Journey"},
+  welcome: {
+    es:'Bienvenidos, hermanos, a este encuentro. Seis días para caminar juntos entre santuarios, historia y convivio — desde el Tepeyac hasta las calles empedradas de Puebla. <strong>Regístrate o entra</strong> con tu cuenta de peregrino para ver el itinerario completo.',
+    en:'Welcome, brothers and sisters, to this gathering. Six days walking together through shrines, history, and fellowship — from Tepeyac to the cobblestone streets of Puebla. <strong>Register or sign in</strong> with your pilgrim account to see the full itinerary.'
+  },
+  nameLabel: {es:"Nombre completo", en:"Full name"},
+  emailLabel: {es:"Correo electrónico", en:"Email address"},
+  codeLabel: {es:"Código de acceso del grupo", en:"Group access code"},
+  codePlaceholder: {es:"Te lo compartió el organizador", en:"Given to you by the organizer"},
+  startBtn: {es:"Comienza", en:"Start"},
+  fineprint: {es:"Este acceso es solo para miembros confirmados del viaje. Necesitas el código de acceso que compartió el organizador del grupo.", en:"This access is only for confirmed trip members. You need the access code shared by the group organizer."},
+  codeError: {es:"Código de acceso incorrecto. Verifica con el organizador del grupo.", en:"Incorrect access code. Check with your group organizer."},
+  greetPrefix: {es:"Bienvenido/a, ", en:"Welcome, "},
+  caminoTitle: {es:"El Camino", en:"The Path"},
+  datesLine: {es:"9 – 14 de diciembre · Ciudad de México · Puebla", en:"December 9–14 · Mexico City · Puebla"},
+  logout: {es:"Salir", en:"Log out"},
+  continuePrayers: {es:"Continúa a Oraciones del Día", en:"Continue to Prayers of the Day"},
+  footerNote: {es:"Trayectur — que este recorrido sea también un camino interior. 🕊️", en:"Trayectur — may this journey also be an inward path. 🕊️"},
+  prayersGreet: {es:"Antes de continuar", en:"Before continuing"},
+  prayersTitle: {es:"Oraciones del Día", en:"Prayers of the Day"},
+  back: {es:"Atrás", en:"Back"},
+  continueMore: {es:"Continúa para más", en:"Continue for more"},
+  rosaryLinkTitle: {es:"Santo Rosario", en:"Holy Rosary"},
+  rosaryGreet: {es:"Reza con nosotros", en:"Pray with us"},
+  signCross: {es:"Señal de la Cruz", en:"Sign of the Cross"},
+  signCrossClose: {es:"Señal de la Cruz — Cierre", en:"Sign of the Cross — Closing"},
+  credoLabel: {es:"Credo", en:"Creed"},
+  padreNuestroLabel: {es:"Padre Nuestro", en:"Our Father"},
+  tresAve: {es:"Tres Avemarías (fe, esperanza, caridad)", en:"Three Hail Marys (faith, hope, charity)"},
+  gloriaLabel: {es:"Gloria", en:"Glory Be"},
+  misterioLabel: {es:"Misterio", en:"Mystery"},
+  decadeSteps: {es:"Padre Nuestro · 10 Avemarías · Gloria ·", en:"Our Father · 10 Hail Marys · Glory Be ·"},
+  ohJesusLink: {es:"Oh Jesús mío", en:"O My Jesus"},
+  cierre: {es:"Cierre", en:"Closing"},
+  salveLabel: {es:"Salve Reina", en:"Hail Holy Queen"},
+  finalLabel: {es:"Oración Final", en:"Final Prayer"},
+  completeMsg: {es:"🕊️ Rosario completado — gracias por acompañarnos en oración.", en:"🕊️ Rosary completed — thank you for praying with us."},
+  resetRosary: {es:"Reiniciar rosario", en:"Reset rosary"},
+  verOracion: {es:"ver oración", en:"view prayer"},
+  letaniasClosed: {es:"Letanías de la Virgen (opcional)", en:"Litany of the Virgin (optional)"},
+  letaniasOpen: {es:"Ocultar Letanías de la Virgen", en:"Hide Litany of the Virgin"},
+  closingGreet: {es:"Con gratitud", en:"With gratitude"},
+  closingTitle: {es:"Hasta Pronto", en:"See You Soon"},
+  closingP1: {
+    es:"Gracias por caminar juntos estos días — por cada oración compartida, cada templo visitado y cada momento de convivio en el camino. Ha sido un regalo tenerte como compañero de este peregrinaje, y llevamos con nosotros la alegría de haber recorrido México acompañados en la fe.",
+    en:"Thank you for walking together these days — for every shared prayer, every shrine visited, and every moment of fellowship along the way. It has been a gift to have you as a companion on this pilgrimage, and we carry with us the joy of having traveled Mexico accompanied in faith."
+  },
+  closingP2: {
+    es:"Que este viaje siga vivo en el corazón mucho después de haber vuelto a casa. Hasta el próximo camino, hermano, hermana. 🕊️",
+    en:"May this journey stay alive in your heart long after you've returned home. Until the next path, brother, sister. 🕊️"
+  },
+  wantMore: {es:"¿Quieres más?", en:"Want more?"},
+  waBtn: {es:"Envía WhatsApp para eBook de Descubre México", en:"Send WhatsApp for the Discover Mexico eBook"},
+  waMsg: {es:"Hola, me gustaría solicitar el eBook de Descubre México 🇲🇽", en:"Hi, I'd like to request the Discover Mexico eBook 🇲🇽"},
+  progress: {es:(f,t)=>`${f} / ${t} cuentas rezadas`, en:(f,t)=>`${f} / ${t} beads prayed`},
+  mysteriesHint: {es:(label,days)=>`Misterios ${label} · ${days} — toca cada uno para leer su explicación`, en:(label,days)=>`${label} Mysteries · ${days} — tap each to read its explanation`}
+};
+
+function renderStaticText(){
+  document.getElementById('t-eyebrow').textContent = T(UI.eyebrow);
+  document.getElementById('t-subtitle').textContent = T(UI.subtitle);
+  document.getElementById('t-welcome').innerHTML = T(UI.welcome);
+  document.getElementById('t-namelabel').textContent = T(UI.nameLabel);
+  document.getElementById('t-emaillabel').textContent = T(UI.emailLabel);
+  document.getElementById('t-codelabel').textContent = T(UI.codeLabel);
+  document.getElementById('r-code').placeholder = T(UI.codePlaceholder);
+  document.getElementById('t-startbtn').textContent = T(UI.startBtn);
+  document.getElementById('t-fineprint').textContent = T(UI.fineprint);
+
+  document.getElementById('t-caminotitle').textContent = T(UI.caminoTitle);
+  document.getElementById('t-dates').textContent = T(UI.datesLine);
+  document.getElementById('t-logout1').textContent = T(UI.logout);
+  document.getElementById('t-continueprayers').textContent = T(UI.continuePrayers);
+  document.getElementById('t-footer1').textContent = T(UI.footerNote);
+
+  document.getElementById('t-prayersgreet').textContent = T(UI.prayersGreet);
+  document.getElementById('t-prayerstitle').textContent = T(UI.prayersTitle);
+  document.getElementById('t-back1').textContent = T(UI.back);
+  document.getElementById('t-continuemore').textContent = T(UI.continueMore);
+
+  document.getElementById('t-rosarygreet').textContent = T(UI.rosaryGreet);
+  document.getElementById('t-rosarytitle').textContent = T(UI.rosaryLinkTitle);
+  document.getElementById('t-back2').textContent = T(UI.back);
+  document.getElementById('t-resetrosary').textContent = T(UI.resetRosary);
+  document.getElementById('letanias-toggle-label').textContent = letaniasOpen ? T(UI.letaniasOpen) : T(UI.letaniasClosed);
+
+  document.getElementById('t-closinggreet').textContent = T(UI.closingGreet);
+  document.getElementById('t-closingtitle').textContent = T(UI.closingTitle);
+  document.getElementById('t-back3').textContent = T(UI.back);
+  document.getElementById('t-closingp1').textContent = T(UI.closingP1);
+  document.getElementById('t-closingp2').textContent = T(UI.closingP2);
+  document.getElementById('t-walabel').textContent = T(UI.wantMore);
+  document.getElementById('t-wabtn').textContent = T(UI.waBtn);
+  document.getElementById('t-footer2').textContent = T(UI.footerNote);
+  document.getElementById('wa-btn-link').href = "https://wa.me/526141847425?text=" + encodeURIComponent(T(UI.waMsg));
+
+  if(currentUser){
+    document.getElementById('greet-name').textContent = T(UI.greetPrefix) + currentUser.name.split(' ')[0];
+  }
+}
+
+function renderAllVisible(){
+  if(!document.getElementById('screen-itinerary').classList.contains('hidden')) renderCamino();
+  if(!document.getElementById('screen-prayers').classList.contains('hidden')) renderPrayers();
+  if(!document.getElementById('screen-rosary').classList.contains('hidden')) renderRosaryScreen();
+}
+
+/* ============================================================
+   PLACES
+   ============================================================ */
+function pl(slug, label){
+  return `<span class="place-link" onclick="openPlace(event,'${slug}')">${label}</span>`;
+}
+
+const PLACES = {
+  basilica:{
+    title:{es:"Basílica de Guadalupe", en:"Basilica of Guadalupe"},
+    icon:"rose",
+    blurb:{
+      es:"Aquí, en el cerro del Tepeyac, la tradición sitúa las apariciones de la Virgen de Guadalupe a Juan Diego en 1531. La Basílica actual, inaugurada en 1976, resguarda la tilma con su imagen y recibe cada año a millones de peregrinos de todo el continente — especialmente en las fiestas de diciembre.",
+      en:"Here, on Tepeyac hill, tradition places the apparitions of Our Lady of Guadalupe to Juan Diego in 1531. The current Basilica, opened in 1976, houses the tilma bearing her image and welcomes millions of pilgrims from across the continent every year — especially during the December feast."
+    }
+  },
+  teotihuacan:{
+    title:{es:"Teotihuacán", en:"Teotihuacan"},
+    icon:"pyramid",
+    blurb:{
+      es:"Una de las ciudades más grandes de la Mesoamérica antigua, con más de 1,900 años de historia. Sus Pirámides del Sol y de la Luna, unidas por la Calzada de los Muertos, siguen siendo un testimonio imponente de una civilización que floreció mucho antes de la llegada de los españoles.",
+      en:"One of the largest cities of ancient Mesoamerica, with more than 1,900 years of history. Its Pyramids of the Sun and Moon, joined by the Avenue of the Dead, remain an imposing testament to a civilization that flourished long before the Spanish arrived."
+    }
+  },
+  cholula:{
+    title:{es:"Gran Pirámide de Cholula", en:"Great Pyramid of Cholula"},
+    icon:"pyramid-church",
+    blurb:{
+      es:"La base piramidal más grande del mundo por volumen, construida en capas a lo largo de siglos por distintas culturas. Sobre su cumbre, los españoles levantaron la iglesia de Nuestra Señora de los Remedios — dos épocas y dos fes conviviendo en un mismo montículo.",
+      en:"The largest pyramid base in the world by volume, built in layers over centuries by different cultures. On its summit, the Spanish built the church of Nuestra Señora de los Remedios — two eras and two faiths sharing the same mound."
+    }
+  },
+  capillarosario:{
+    title:{es:"Capilla del Rosario", en:"Rosary Chapel"},
+    icon:"dome",
+    blurb:{
+      es:"Dentro del Templo de Santo Domingo en Puebla, esta capilla del siglo XVII está cubierta casi por completo de talavera, estuco y hoja de oro. Se le considera una de las joyas más deslumbrantes del barroco novohispano en toda América.",
+      en:"Inside the Church of Santo Domingo in Puebla, this 17th-century chapel is covered almost entirely in talavera tile, stucco, and gold leaf. It is considered one of the most dazzling jewels of New Spanish Baroque art in all of the Americas."
+    }
+  },
+  stodomingocdmx:{
+    title:{es:"Templo de Santo Domingo de Guzmán", en:"Church of Santo Domingo de Guzmán"},
+    icon:"church",
+    blurb:{
+      es:"Templo dominico del Centro Histórico de la Ciudad de México, con una fachada barroca que ha sido testigo de siglos de historia religiosa, incluida la época del Tribunal del Santo Oficio, que tuvo su sede muy cerca de aquí.",
+      en:"A Dominican church in Mexico City's Historic Center, its Baroque façade has witnessed centuries of religious history — including the era of the Holy Office tribunal, which was headquartered very close by."
+    }
+  },
+  profesa:{
+    title:{es:"Templo de La Profesa", en:"Church of La Profesa"},
+    icon:"church",
+    blurb:{
+      es:"Antiguo templo jesuita fundado en el siglo XVI y reconstruido tras un incendio en el XVIII. Su nombre viene de haber sido la casa donde los jesuitas hacían su 'profesión' religiosa, antes de ser expulsados de los territorios españoles en 1767.",
+      en:"A former Jesuit church founded in the 16th century and rebuilt after a fire in the 18th. Its name comes from having been the house where Jesuits made their religious 'profession,' before being expelled from Spanish territories in 1767."
+    }
+  },
+  catedral:{
+    title:{es:"Catedral Metropolitana", en:"Metropolitan Cathedral"},
+    icon:"cathedral",
+    blurb:{
+      es:"La catedral católica más grande de América Latina, construida a lo largo de casi 250 años sobre lo que fue el recinto sagrado mexica. Su fachada mezcla estilos gótico, barroco y neoclásico en una sola obra monumental.",
+      en:"The largest Catholic cathedral in Latin America, built over nearly 250 years atop what was once the sacred Mexica precinct. Its façade blends Gothic, Baroque, and Neoclassical styles into a single monumental work."
+    }
+  },
+  sanhipolito:{
+    title:{es:"Templo de San Hipólito", en:"Church of San Hipólito"},
+    icon:"flame",
+    blurb:{
+      es:"Hogar de la imagen de San Judas Tadeo, patrono de las causas difíciles. Aunque cada día 28 de mes miles de fieles llegan aquí en romería, su devoción se vive todos los días del año, en un templo que también recuerda momentos clave de la fundación de la ciudad.",
+      en:"Home to the image of St. Jude Thaddeus, patron of difficult causes. While thousands of faithful arrive in pilgrimage every 28th of the month, devotion here is alive year-round, in a church that also recalls key moments in the city's founding."
+    }
+  },
+  chapultepec:{
+    title:{es:"Bosque de Chapultepec", en:"Chapultepec Forest"},
+    icon:"leaf",
+    blurb:{
+      es:"Uno de los parques urbanos más grandes de América Latina, con más de siete siglos de historia. En lo alto de su cerro se levanta el Castillo de Chapultepec, testigo de la época virreinal, del Imperio mexicano y de momentos decisivos de la historia del país.",
+      en:"One of the largest urban parks in Latin America, with more than seven centuries of history. Atop its hill stands Chapultepec Castle, witness to the viceregal era, the Mexican Empire, and decisive moments in the country's history."
+    }
+  }
+};
+
+const ICONS = {
+  rose:'<svg viewBox="0 0 64 64" fill="none" stroke="#E4C666" stroke-width="2"><circle cx="32" cy="26" r="10"/><path d="M32 36 C 24 44, 24 52, 32 58 C 40 52, 40 44, 32 36 Z"/></svg>',
+  pyramid:'<svg viewBox="0 0 64 64" fill="none" stroke="#E4C666" stroke-width="2"><path d="M32 12 L52 48 L12 48 Z"/><path d="M24 48 L32 30 L40 48"/><path d="M18 48 L32 22 L46 48"/></svg>',
+  "pyramid-church":'<svg viewBox="0 0 64 64" fill="none" stroke="#E4C666" stroke-width="2"><path d="M32 20 L48 48 L16 48 Z"/><rect x="27" y="8" width="10" height="10"/><path d="M32 8 L32 3 M29 5 L35 5"/></svg>',
+  dome:'<svg viewBox="0 0 64 64" fill="none" stroke="#E4C666" stroke-width="2"><path d="M16 48 L16 34 A16 16 0 0 1 48 34 L48 48 Z"/><path d="M12 48 L52 48"/><path d="M32 18 L32 10 M28 12 L36 12"/></svg>',
+  church:'<svg viewBox="0 0 64 64" fill="none" stroke="#E4C666" stroke-width="2"><path d="M18 50 L18 26 L32 14 L46 26 L46 50 Z"/><path d="M14 50 L50 50"/><path d="M32 14 L32 6 M28 8 L36 8"/><rect x="27" y="36" width="10" height="14"/></svg>',
+  cathedral:'<svg viewBox="0 0 64 64" fill="none" stroke="#E4C666" stroke-width="2"><rect x="14" y="30" width="10" height="20"/><rect x="40" y="30" width="10" height="20"/><path d="M14 30 L19 20 L24 30 M40 30 L45 20 L50 30"/><path d="M24 50 L24 24 L32 16 L40 24 L40 50 Z"/><path d="M10 50 L54 50"/></svg>',
+  flame:'<svg viewBox="0 0 64 64" fill="none" stroke="#E4C666" stroke-width="2"><path d="M32 10 C 20 24, 20 34, 28 40 C 24 32, 28 28, 32 24 C 36 30, 40 32, 38 42 C 46 36, 46 24, 32 10 Z"/><path d="M22 48 A 10 10 0 0 0 42 48"/></svg>',
+  leaf:'<svg viewBox="0 0 64 64" fill="none" stroke="#E4C666" stroke-width="2"><path d="M14 50 C 14 24, 34 12, 50 12 C 50 30, 38 50, 14 50 Z"/><path d="M16 48 C 26 36, 34 26, 48 14"/></svg>'
+};
+
+function openPlace(e, slug){
+  if(e) e.stopPropagation();
+  const p = PLACES[slug];
+  if(!p) return;
+  showInfoModal(T(p.title), T(p.blurb), p.icon);
+}
+function closePlace(){
+  document.getElementById('modal-overlay').classList.remove('show');
+}
+function closePlaceOnOverlay(e){
+  if(e.target.id === 'modal-overlay') closePlace();
+}
+function showInfoModal(title, text, iconKey){
+  document.getElementById('modal-icon').innerHTML = ICONS[iconKey || 'rose'] || '';
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-blurb').textContent = text;
+  document.getElementById('modal-overlay').classList.add('show');
+}
+
+/* ============================================================
+   AUTH
+   ============================================================ */
+const ACCESS_CODE = "PEREGRINO2026";
+let currentUser = null;
+
+async function handleRegister(e){
+  e.preventDefault();
+  const name = document.getElementById('r-name').value.trim();
+  const email = document.getElementById('r-email').value.trim().toLowerCase();
+  const code = document.getElementById('r-code').value.trim().toUpperCase();
+  const msgEl = document.getElementById('register-msg');
+  msgEl.textContent = ''; msgEl.className='msg';
+
+  if(code !== ACCESS_CODE){
+    msgEl.textContent = T(UI.codeError);
+    msgEl.className='msg error';
+    return false;
+  }
+
+  const record = {name, email, joined: new Date().toISOString()};
+  try{
+    await window.storage.set('asistente:'+email, JSON.stringify(record), true);
+  }catch(err){
+    console.error('Storage error:', err);
+  }
+  currentUser = record;
+  enterItinerary();
+  return false;
+}
+
+function handleLogout(){
+  currentUser = null;
+  document.getElementById('screen-itinerary').classList.add('hidden');
+  document.getElementById('screen-landing').classList.remove('hidden');
+  document.getElementById('form-register').reset();
+}
+
+function enterItinerary(){
+  document.getElementById('greet-name').textContent = T(UI.greetPrefix) + currentUser.name.split(' ')[0];
+  document.getElementById('screen-landing').classList.add('hidden');
+  document.getElementById('screen-itinerary').classList.remove('hidden');
+  renderCamino();
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+function goTo(screenId){
+  ['screen-itinerary','screen-prayers','screen-rosary','screen-closing'].forEach(id=>{
+    document.getElementById(id).classList.toggle('hidden', id!==screenId);
+  });
+  window.scrollTo(0,0);
+  if(screenId === 'screen-prayers') renderPrayers();
+  if(screenId === 'screen-rosary') renderRosaryScreen();
+}
+
+/* ============================================================
+   ITINERARY DAYS
+   ============================================================ */
+const DAYS = [
+  {
+    n:1, date:{es:"9 dic", en:"Dec 9"},
+    title:{es:"Llegada a la Ciudad de México", en:"Arrival in Mexico City"},
+    activities:{
+      es:["Recepción del grupo en el aeropuerto","Traslado al hotel","Check-in y tarde libre para descansar del viaje"],
+      en:["Group reception at the airport","Transfer to the hotel","Check-in and a free evening to rest from the trip"]
+    },
+    note:null,
+    reflection:{es:"Señor, bendice este viaje que hoy comienza. Que cada paso que demos en esta tierra nos acerque un poco más a Ti.", en:"Lord, bless this journey that begins today. May every step we take on this land bring us a little closer to You."}
+  },
+  {
+    n:2, date:{es:"10 dic", en:"Dec 10"},
+    title:{es:"Basílica de Guadalupe y Teotihuacán", en:"Basilica of Guadalupe and Teotihuacan"},
+    activities:{
+      es:[
+        `Llegada a la ${pl('basilica','Basílica de Guadalupe')} — recorrido del recinto (Antigua Basílica, Capilla del Cerrito, Basílica Nueva)`,
+        "Misa: horario ordinario de lunes a domingo entre 6:00 y 20:00 h, con Misa Coral a las 10:00 h y Rosario Solemne a las 18:00 h — confirmen el horario exacto al llegar",
+        `Salida hacia ${pl('teotihuacan','Teotihuacán')} — recorrido de la Calzada de los Muertos, Pirámide del Sol y de la Luna`
+      ],
+      en:[
+        `Arrival at the ${pl('basilica','Basilica of Guadalupe')} — tour of the grounds (Old Basilica, Capilla del Cerrito, New Basilica)`,
+        "Mass: regular schedule Monday–Sunday between 6:00 am and 8:00 pm, with Choral Mass at 10:00 am and Solemn Rosary at 6:00 pm — confirm the exact time upon arrival",
+        `Departure to ${pl('teotihuacan','Teotihuacan')} — tour of the Avenue of the Dead, Pyramid of the Sun and of the Moon`
+      ]
+    },
+    note:{es:"A dos días de la fiesta guadalupana del 12 de diciembre, el santuario puede tener más actividad de lo usual mientras se preparan las celebraciones.", en:"Two days before the December 12 feast, the shrine may be busier than usual as celebrations are being prepared."},
+    reflection:{es:"Como Juan Diego en el Tepeyac, venimos con las manos vacías y el corazón abierto, confiando en que seremos escuchados.", en:"Like Juan Diego at Tepeyac, we come with empty hands and open hearts, trusting that we will be heard."}
+  },
+  {
+    n:3, date:{es:"11 dic", en:"Dec 11"},
+    title:{es:"Cholula y Puebla", en:"Cholula and Puebla"},
+    activities:{
+      es:[
+        "Salida temprano de CDMX hacia Cholula",
+        `Visita a la ${pl('cholula','Gran Pirámide de Cholula')} y el templo en su cima`,
+        "Traslado a Puebla — café en un cafetal local",
+        `Templo de Santo Domingo y la ${pl('capillarosario','Capilla del Rosario')}, una de las joyas del barroco novohispano`,
+        "Recorrido por talleres de Talavera y dulces típicos poblanos",
+        "Regreso a la Ciudad de México"
+      ],
+      en:[
+        "Early departure from Mexico City to Cholula",
+        `Visit to the ${pl('cholula','Great Pyramid of Cholula')} and the church at its summit`,
+        "Transfer to Puebla — coffee at a local coffee farm",
+        `Church of Santo Domingo and the ${pl('capillarosario','Rosary Chapel')}, one of the jewels of New Spanish Baroque`,
+        "Visit to Talavera pottery workshops and traditional Puebla sweets",
+        "Return to Mexico City"
+      ]
+    },
+    note:{es:"Día largo — conviene salir antes de las 7:00 am para evitar el tráfico de entrada y salida de la ciudad.", en:"Long day — it's best to leave before 7:00 am to avoid traffic in and out of the city."},
+    reflection:{es:"En el oro de la Capilla del Rosario, que resplandezca también la gratitud de este día compartido.", en:"In the gold of the Rosary Chapel, may the gratitude of this shared day shine as well."}
+  },
+  {
+    n:4, date:{es:"12 dic", en:"Dec 12"},
+    title:{es:"Centro Histórico de la Ciudad de México", en:"Mexico City's Historic Center"},
+    activities:{
+      es:[
+        pl('stodomingocdmx','Templo de Santo Domingo de Guzmán'),
+        pl('profesa','Templo de La Profesa (San Felipe Neri)'),
+        pl('catedral','Catedral Metropolitana'),
+        "Tarde libre para recorrer el Centro Histórico"
+      ],
+      en:[
+        pl('stodomingocdmx','Church of Santo Domingo de Guzmán'),
+        pl('profesa','Church of La Profesa (San Felipe Neri)'),
+        pl('catedral','Metropolitan Cathedral'),
+        "Free afternoon to explore the Historic Center"
+      ]
+    },
+    note:{es:"El 12 de diciembre es el Día de la Virgen de Guadalupe, fiesta nacional — puede haber cierres viales y más movimiento de lo usual cerca del Centro Histórico.", en:"December 12 is the Feast of Our Lady of Guadalupe, a national holiday — expect possible road closures and more movement than usual near the Historic Center."},
+    reflection:{es:"Entre piedras que han visto siglos de fe, que hoy también quede una huella de la nuestra.", en:"Among stones that have witnessed centuries of faith, may today leave a trace of ours as well."}
+  },
+  {
+    n:5, date:{es:"13 dic", en:"Dec 13"},
+    title:{es:"San Hipólito y Chapultepec", en:"San Hipólito and Chapultepec"},
+    activities:{
+      es:[
+        `${pl('sanhipolito','Templo de San Hipólito')} — devoción a San Judas Tadeo`,
+        "Tiempo de oración y reflexión personal",
+        `Por la tarde, visita al ${pl('chapultepec','Bosque de Chapultepec')}`
+      ],
+      en:[
+        `${pl('sanhipolito','Church of San Hipólito')} — devotion to St. Jude Thaddeus`,
+        "Time for personal prayer and reflection",
+        `In the afternoon, visit to ${pl('chapultepec','Chapultepec Forest')}`
+      ]
+    },
+    note:null,
+    reflection:{es:"San Judas, patrono de las causas difíciles, intercede por lo que cada uno de nosotros carga en silencio.", en:"St. Jude, patron of difficult causes, intercede for what each of us carries in silence."}
+  },
+  {
+    n:6, date:{es:"14 dic", en:"Dec 14"},
+    title:{es:"Regreso a San Antonio", en:"Return to San Antonio"},
+    activities:{
+      es:["Traslado del hotel al aeropuerto","Vuelo de regreso a San Antonio"],
+      en:["Transfer from the hotel to the airport","Return flight to San Antonio"]
+    },
+    note:null,
+    reflection:{es:"Que lo vivido en este camino no se quede en México, sino que vuelva con nosotros a casa.", en:"May what we've lived on this path not stay in Mexico, but travel home with us."}
+  }
+];
+
+function renderCamino(){
+  const wrap = document.getElementById('camino');
+  wrap.innerHTML = DAYS.map(d => `
+    <div class="day" id="day-${d.n}">
+      <div class="bead-wrap"><div class="bead">${d.n}</div></div>
+      <div class="day-card">
+        <div class="day-head" onclick="toggleDay(${d.n})">
+          <div>
+            <div class="dlabel">${LANG==='es'?'Día':'Day'} ${d.n} · ${T(d.date)}</div>
+            <h3>${T(d.title)}</h3>
+          </div>
+          <div class="chev">⌄</div>
+        </div>
+        <div class="day-body">
+          <div class="day-body-inner">
+            <ul class="activity-list">
+              ${T(d.activities).map(a => `<li>${a}</li>`).join('')}
+            </ul>
+            ${d.note ? `<div class="note">${T(d.note)}</div>` : ''}
+            <button class="reflect-btn" onclick="toggleReflection(event, ${d.n})">${LANG==='es'?'Reflexión':'Reflection'}</button>
+            <div class="reflection" id="reflection-${d.n}">${T(d.reflection)}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+function toggleDay(n){
+  document.getElementById('day-'+n).classList.toggle('open');
+}
+function toggleReflection(e, n){
+  e.stopPropagation();
+  document.getElementById('reflection-'+n).classList.toggle('show');
+}
+
+/* ============================================================
+   PRAYERS
+   ============================================================ */
+const PRAYERS = [
+  {
+    id:"padrenuestro",
+    title:{es:"Padre Nuestro", en:"Our Father"},
+    text:{
+      es:"Padre nuestro, que estás en el cielo,\nsantificado sea tu Nombre;\nvenga a nosotros tu reino;\nhágase tu voluntad en la tierra como en el cielo.\nDanos hoy nuestro pan de cada día;\nperdona nuestras ofensas,\ncomo también nosotros perdonamos\na los que nos ofenden;\nno nos dejes caer en la tentación,\ny líbranos del mal.\nAmén.",
+      en:"Our Father, who art in heaven,\nhallowed be Thy name;\nThy kingdom come;\nThy will be done on earth as it is in heaven.\nGive us this day our daily bread;\nand forgive us our trespasses,\nas we forgive those\nwho trespass against us;\nand lead us not into temptation,\nbut deliver us from evil.\nAmen."
+    }
+  },
+  {
+    id:"avemaria",
+    title:{es:"Ave María", en:"Hail Mary"},
+    text:{
+      es:"Dios te salve, María, llena eres de gracia, el Señor es contigo;\nbendita Tú eres entre todas las mujeres,\ny bendito es el fruto de tu vientre, Jesús.\nSanta María, Madre de Dios,\nruega por nosotros, pecadores,\nahora y en la hora de nuestra muerte.\nAmén.",
+      en:"Hail Mary, full of grace, the Lord is with thee;\nblessed art thou among women,\nand blessed is the fruit of thy womb, Jesus.\nHoly Mary, Mother of God,\npray for us sinners,\nnow and at the hour of our death.\nAmen."
+    }
+  },
+  {
+    id:"credo",
+    title:{es:"El Credo", en:"The Creed"},
+    text:{
+      es:"Creo en un solo Dios,\nPadre todopoderoso,\nCreador del cielo y de la tierra,\nde todo lo visible y lo invisible.\n\nCreo en un solo Señor, Jesucristo,\nHijo único de Dios,\nnacido del Padre antes de todos los siglos:\nDios de Dios, Luz de Luz,\nDios verdadero de Dios verdadero,\nengendrado, no creado,\nde la misma naturaleza que el Padre,\npor quien todo fue hecho;\nque por nosotros los hombres\ny por nuestra salvación\nbajó del cielo,\n\ny por obra del Espíritu Santo\nse encarnó de María, la Virgen,\ny se hizo hombre;\n\ny por nuestra causa fue crucificado\nen tiempos de Poncio Pilato;\npadeció y fue sepultado,\ny resucitó al tercer día, según las Escrituras,\ny subió al cielo,\ny está sentado a la derecha del Padre;\ny de nuevo vendrá con gloria\npara juzgar a vivos y muertos,\ny su reino no tendrá fin.\n\nCreo en el Espíritu Santo,\nSeñor y dador de vida,\nque procede del Padre y del Hijo,\nque con el Padre y el Hijo recibe una misma adoración y gloria,\ny que habló por los profetas.\n\nCreo en la Iglesia,\nque es una, santa, católica y apostólica.\nConfieso que hay un solo bautismo\npara el perdón de los pecados.\nEspero la resurrección de los muertos\ny la vida del mundo futuro.\n\nAmén.",
+      en:"I believe in one God,\nthe Father almighty,\nmaker of heaven and earth,\nof all things visible and invisible.\n\nI believe in one Lord Jesus Christ,\nthe Only Begotten Son of God,\nborn of the Father before all ages:\nGod from God, Light from Light,\ntrue God from true God,\nbegotten, not made,\nconsubstantial with the Father;\nthrough him all things were made.\nFor us men and for our salvation\nhe came down from heaven,\n\nand by the Holy Spirit was incarnate\nof the Virgin Mary,\nand became man.\n\nFor our sake he was crucified\nunder Pontius Pilate,\nhe suffered death and was buried,\nand rose again on the third day\nin accordance with the Scriptures.\nHe ascended into heaven\nand is seated at the right hand of the Father.\nHe will come again in glory\nto judge the living and the dead\nand his kingdom will have no end.\n\nI believe in the Holy Spirit, the Lord, the giver of life,\nwho proceeds from the Father and the Son,\nwho with the Father and the Son is adored and glorified,\nwho has spoken through the prophets.\n\nI believe in one, holy, catholic\nand apostolic Church.\nI confess one baptism\nfor the forgiveness of sins\nand I look forward to the resurrection of the dead\nand the life of the world to come.\n\nAmen."
+    }
+  },
+  {
+    id:"actocontricion",
+    title:{es:"Acto de Contrición", en:"Act of Contrition"},
+    text:{
+      es:"Señor mío Jesucristo, Dios y hombre verdadero,\nCreador, Padre y Redentor mío;\npor ser Tú quien eres, bondad infinita,\ny porque te amo sobre todas las cosas,\nme pesa de todo corazón haberte ofendido;\ntambién me pesa porque puedes castigarme con las penas del infierno.\nAyudado de tu divina gracia,\npropongo firmemente nunca más pecar,\nconfesarme y cumplir la penitencia que me sea impuesta.\nAmén.",
+      en:"O my God, I am heartily sorry for having offended Thee,\nand I detest all my sins,\nbecause I dread the loss of heaven and the pains of hell;\nbut most of all because they offend Thee, my God,\nwho art all good and deserving of all my love.\nI firmly resolve, with the help of Thy grace,\nto sin no more, and to avoid the near occasions of sin.\nAmen."
+    }
+  },
+  {
+    id:"salve",
+    title:{es:"El Salve Reina", en:"Hail Holy Queen"},
+    text:{
+      es:"Dios te salve, Reina y Madre de misericordia,\nvida, dulzura y esperanza nuestra; Dios te salve.\nA ti llamamos los desterrados hijos de Eva;\na ti suspiramos, gimiendo y llorando,\nen este valle de lágrimas.\nEa, pues, Señora, abogada nuestra,\nvuelve a nosotros esos tus ojos misericordiosos;\ny después de este destierro muéstranos a Jesús,\nfruto bendito de tu vientre.\n¡Oh clementísima, oh piadosa, oh dulce siempre Virgen María!\nRuega por nosotros, Santa Madre de Dios,\npara que seamos dignos de alcanzar\nlas promesas de nuestro Señor Jesucristo.\nAmén.",
+      en:"Hail, Holy Queen, Mother of mercy,\nour life, our sweetness, and our hope.\nTo thee do we cry, poor banished children of Eve;\nto thee do we send up our sighs,\nmourning and weeping in this valley of tears.\nTurn then, most gracious advocate,\nthine eyes of mercy toward us;\nand after this our exile,\nshow unto us the blessed fruit of thy womb, Jesus.\nO clement, O loving, O sweet Virgin Mary!\nPray for us, O Holy Mother of God,\nthat we may be made worthy\nof the promises of Christ.\nAmen."
+    }
+  }
+];
+
+function renderPrayers(){
+  const wrap = document.getElementById('prayers-wrap');
+  wrap.innerHTML = PRAYERS.map(p => `
+    <div class="prayer-card" id="prayer-${p.id}">
+      <div class="prayer-head" onclick="togglePrayer('${p.id}')">
+        <h3>${T(p.title)}</h3>
+        <div class="chev">⌄</div>
+      </div>
+      <div class="prayer-body">
+        <div class="prayer-body-inner">${T(p.text)}</div>
+      </div>
+    </div>
+  `).join('') + `
+    <div class="prayer-card rosary-link" onclick="goTo('screen-rosary')">
+      <div class="prayer-head">
+        <h3>${T(UI.rosaryLinkTitle)}</h3>
+        <div class="chev" style="transform:rotate(-90deg)">⌄</div>
+      </div>
+    </div>
+  `;
+}
+function togglePrayer(id){
+  document.getElementById('prayer-'+id).classList.toggle('open');
+}
+
+/* ============================================================
+   MYSTERIES + ROSARY
+   ============================================================ */
+const MYSTERIES = {
+  gozosos:{
+    label:{es:"Gozosos", en:"Joyful"}, days:{es:"Lunes y Sábado", en:"Monday and Saturday"},
+    items:[
+      {t:{es:"La Anunciación", en:"The Annunciation"}, b:{es:"El arcángel Gabriel anuncia a María que será la madre del Hijo de Dios, y ella responde con un sí libre y confiado: \"Hágase en mí según tu palabra\".", en:"The archangel Gabriel announces to Mary that she will be the mother of the Son of God, and she responds with a free and trusting yes: \"Let it be done to me according to thy word.\""}},
+      {t:{es:"La Visitación", en:"The Visitation"}, b:{es:"María visita a su prima Isabel, embarazada de Juan el Bautista, y la saluda con el canto del Magníficat, alabando la grandeza de Dios.", en:"Mary visits her cousin Elizabeth, pregnant with John the Baptist, and greets her with the Magnificat, praising the greatness of God."}},
+      {t:{es:"El Nacimiento de Jesús en Belén", en:"The Nativity"}, b:{es:"Jesús nace en un pesebre, entre pobreza y sencillez, y los pastores acuden a adorarlo guiados por los ángeles.", en:"Jesus is born in a manger, in poverty and simplicity, and shepherds come to adore him, guided by angels."}},
+      {t:{es:"La Presentación en el Templo", en:"The Presentation in the Temple"}, b:{es:"José y María presentan al Niño Jesús en el Templo, cumpliendo la ley judía, y el anciano Simeón lo reconoce como el Salvador prometido.", en:"Joseph and Mary present the Child Jesus in the Temple, fulfilling Jewish law, and the elderly Simeon recognizes him as the promised Savior."}},
+      {t:{es:"El Niño Jesús hallado en el Templo", en:"The Finding in the Temple"}, b:{es:"A los doce años, Jesús se queda en el Templo enseñando a los doctores de la ley, y sus padres lo encuentran tres días después.", en:"At age twelve, Jesus stays behind in the Temple teaching the doctors of the law, and his parents find him three days later."}}
+    ]
+  },
+  dolorosos:{
+    label:{es:"Dolorosos", en:"Sorrowful"}, days:{es:"Martes y Viernes", en:"Tuesday and Friday"},
+    items:[
+      {t:{es:"La Oración en el Huerto", en:"The Agony in the Garden"}, b:{es:"Jesús ora angustiado en Getsemaní la noche antes de su pasión, aceptando con confianza la voluntad del Padre.", en:"Jesus prays in anguish at Gethsemane the night before his passion, trustingly accepting the Father's will."}},
+      {t:{es:"La Flagelación", en:"The Scourging at the Pillar"}, b:{es:"Jesús es azotado brutalmente por orden de Poncio Pilato antes de ser condenado a muerte.", en:"Jesus is brutally scourged by order of Pontius Pilate before being condemned to death."}},
+      {t:{es:"La Coronación de Espinas", en:"The Crowning with Thorns"}, b:{es:"Los soldados se burlan de Jesús coronándolo con espinas y llamándolo, con desprecio, \"rey de los judíos\".", en:"The soldiers mock Jesus, crowning him with thorns and scornfully calling him \"king of the Jews.\""}},
+      {t:{es:"Jesús con la Cruz a cuestas", en:"The Carrying of the Cross"}, b:{es:"Jesús carga la cruz camino al Calvario, cayendo varias veces bajo su peso, acompañado por Simón de Cirene.", en:"Jesus carries the cross on the way to Calvary, falling several times under its weight, accompanied by Simon of Cyrene."}},
+      {t:{es:"La Crucifixión y Muerte", en:"The Crucifixion and Death"}, b:{es:"Jesús muere en la cruz, entregando su vida por la salvación de la humanidad.", en:"Jesus dies on the cross, giving his life for the salvation of humanity."}}
+    ]
+  },
+  gloriosos:{
+    label:{es:"Gloriosos", en:"Glorious"}, days:{es:"Miércoles y Domingo", en:"Wednesday and Sunday"},
+    items:[
+      {t:{es:"La Resurrección", en:"The Resurrection"}, b:{es:"Al tercer día, Jesús resucita de entre los muertos, venciendo a la muerte y abriendo el camino de la vida eterna.", en:"On the third day, Jesus rises from the dead, conquering death and opening the way to eternal life."}},
+      {t:{es:"La Ascensión", en:"The Ascension"}, b:{es:"Jesús asciende al cielo ante sus discípulos, prometiéndoles enviar al Espíritu Santo.", en:"Jesus ascends into heaven before his disciples, promising to send the Holy Spirit."}},
+      {t:{es:"La Venida del Espíritu Santo", en:"The Descent of the Holy Spirit"}, b:{es:"En Pentecostés, el Espíritu Santo desciende sobre María y los apóstoles, dándoles fortaleza para predicar el Evangelio.", en:"At Pentecost, the Holy Spirit descends upon Mary and the apostles, giving them strength to preach the Gospel."}},
+      {t:{es:"La Asunción de María", en:"The Assumption of Mary"}, b:{es:"María es llevada al cielo en cuerpo y alma al final de su vida terrena.", en:"Mary is taken up into heaven, body and soul, at the end of her earthly life."}},
+      {t:{es:"La Coronación de María", en:"The Coronation of Mary"}, b:{es:"María es coronada como Reina del cielo y de la tierra, madre de la Iglesia.", en:"Mary is crowned Queen of heaven and earth, mother of the Church."}}
+    ]
+  },
+  luminosos:{
+    label:{es:"Luminosos", en:"Luminous"}, days:{es:"Jueves", en:"Thursday"},
+    items:[
+      {t:{es:"El Bautismo en el Jordán", en:"The Baptism in the Jordan"}, b:{es:"Jesús es bautizado por Juan, y una voz del cielo lo proclama Hijo amado de Dios.", en:"Jesus is baptized by John, and a voice from heaven proclaims him the beloved Son of God."}},
+      {t:{es:"Las Bodas de Caná", en:"The Wedding at Cana"}, b:{es:"Jesús realiza su primer milagro, convirtiendo el agua en vino, por intercesión de su madre.", en:"Jesus performs his first miracle, turning water into wine, through the intercession of his mother."}},
+      {t:{es:"El Anuncio del Reino de Dios", en:"The Proclamation of the Kingdom"}, b:{es:"Jesús predica la conversión y el perdón, invitando a todos a la vida nueva del Reino.", en:"Jesus preaches conversion and forgiveness, inviting everyone into the new life of the Kingdom."}},
+      {t:{es:"La Transfiguración", en:"The Transfiguration"}, b:{es:"Jesús se transfigura ante Pedro, Santiago y Juan, mostrando su gloria divina en el monte Tabor.", en:"Jesus is transfigured before Peter, James, and John, revealing his divine glory on Mount Tabor."}},
+      {t:{es:"La Institución de la Eucaristía", en:"The Institution of the Eucharist"}, b:{es:"En la Última Cena, Jesús instituye la Eucaristía, entregando su cuerpo y sangre bajo las especies de pan y vino.", en:"At the Last Supper, Jesus institutes the Eucharist, giving his body and blood under the appearance of bread and wine."}}
+    ]
+  }
+};
+let currentMystery = 'gozosos';
+
+const ROSARY_TEXTS = {
+  credo:{title:UI.credoLabel, text:PRAYERS.find(p=>p.id==='credo').text},
+  padrenuestro:{title:UI.padreNuestroLabel, text:PRAYERS.find(p=>p.id==='padrenuestro').text},
+  avemaria:{title:{es:"Ave María", en:"Hail Mary"}, text:PRAYERS.find(p=>p.id==='avemaria').text},
+  gloria:{title:UI.gloriaLabel, text:{
+    es:"Gloria al Padre, al Hijo y al Espíritu Santo.\nComo era en el principio, ahora y siempre,\npor los siglos de los siglos.\nAmén.",
+    en:"Glory be to the Father, and to the Son, and to the Holy Spirit.\nAs it was in the beginning, is now, and ever shall be,\nworld without end.\nAmen."
+  }},
+  ohjesus:{title:UI.ohJesusLink, text:{
+    es:"Oh Jesús mío, perdona nuestros pecados,\nlíbranos del fuego del infierno,\nlleva al cielo a todas las almas,\nespecialmente a las más necesitadas de tu misericordia.\nAmén.",
+    en:"O my Jesus, forgive us our sins,\nsave us from the fires of hell,\nlead all souls to heaven,\nespecially those most in need of Thy mercy.\nAmen."
+  }},
+  salve:{title:UI.salveLabel, text:PRAYERS.find(p=>p.id==='salve').text},
+  final:{title:UI.finalLabel, text:{
+    es:"Ruega por nosotros, Santa Madre de Dios.\nPara que seamos dignos de alcanzar\nlas promesas de Nuestro Señor Jesucristo.\nAmén.",
+    en:"Pray for us, O Holy Mother of God.\nThat we may be made worthy\nof the promises of Christ.\nAmen."
+  }}
+};
+
+const LETANIAS_TEXT = {
+  es:"Señor, ten piedad. Cristo, ten piedad. Señor, ten piedad.\nCristo, óyenos. Cristo, escúchanos.\nDios, Padre celestial, ten piedad de nosotros.\nDios Hijo, Redentor del mundo, ten piedad de nosotros.\nDios Espíritu Santo, ten piedad de nosotros.\nTrinidad Santa, un solo Dios, ten piedad de nosotros.\n\nSanta María, ruega por nosotros.\nSanta Madre de Dios, ruega por nosotros.\nSanta Virgen de las vírgenes, ruega por nosotros.\nMadre de Cristo, ruega por nosotros.\nMadre de la Iglesia, ruega por nosotros.\nMadre de la divina gracia, ruega por nosotros.\nMadre purísima, ruega por nosotros.\nMadre castísima, ruega por nosotros.\nMadre siempre virgen, ruega por nosotros.\nMadre inmaculada, ruega por nosotros.\nMadre amable, ruega por nosotros.\nMadre admirable, ruega por nosotros.\nMadre del buen consejo, ruega por nosotros.\nMadre del Creador, ruega por nosotros.\nMadre del Salvador, ruega por nosotros.\n\nVirgen prudentísima, ruega por nosotros.\nVirgen digna de veneración, ruega por nosotros.\nVirgen digna de alabanza, ruega por nosotros.\nVirgen poderosa, ruega por nosotros.\nVirgen clemente, ruega por nosotros.\nVirgen fiel, ruega por nosotros.\n\nEspejo de justicia, ruega por nosotros.\nTrono de la sabiduría, ruega por nosotros.\nCausa de nuestra alegría, ruega por nosotros.\nVaso espiritual, ruega por nosotros.\nVaso digno de honor, ruega por nosotros.\nRosa mística, ruega por nosotros.\nTorre de David, ruega por nosotros.\nTorre de marfil, ruega por nosotros.\nCasa de oro, ruega por nosotros.\nArca de la Alianza, ruega por nosotros.\nPuerta del cielo, ruega por nosotros.\nEstrella de la mañana, ruega por nosotros.\n\nSalud de los enfermos, ruega por nosotros.\nRefugio de los pecadores, ruega por nosotros.\nConsuelo de los migrantes, ruega por nosotros.\nConsoladora de los afligidos, ruega por nosotros.\nAuxilio de los cristianos, ruega por nosotros.\n\nReina de los Ángeles, ruega por nosotros.\nReina de los Patriarcas, ruega por nosotros.\nReina de los Profetas, ruega por nosotros.\nReina de los Apóstoles, ruega por nosotros.\nReina de los Mártires, ruega por nosotros.\nReina de todos los Santos, ruega por nosotros.\nReina concebida sin pecado original, ruega por nosotros.\nReina de la familia, ruega por nosotros.\nReina de la paz, ruega por nosotros.\n\nCordero de Dios, que quitas el pecado del mundo, perdónanos, Señor.\nCordero de Dios, que quitas el pecado del mundo, escúchanos, Señor.\nCordero de Dios, que quitas el pecado del mundo, ten piedad de nosotros.",
+  en:"Lord, have mercy. Christ, have mercy. Lord, have mercy.\nChrist, hear us. Christ, graciously hear us.\nGod the Father of Heaven, have mercy on us.\nGod the Son, Redeemer of the world, have mercy on us.\nGod the Holy Spirit, have mercy on us.\nHoly Trinity, one God, have mercy on us.\n\nHoly Mary, pray for us.\nHoly Mother of God, pray for us.\nHoly Virgin of virgins, pray for us.\nMother of Christ, pray for us.\nMother of the Church, pray for us.\nMother of divine grace, pray for us.\nMother most pure, pray for us.\nMother most chaste, pray for us.\nMother inviolate, pray for us.\nMother undefiled, pray for us.\nMother most amiable, pray for us.\nMother most admirable, pray for us.\nMother of good counsel, pray for us.\nMother of our Creator, pray for us.\nMother of our Savior, pray for us.\n\nVirgin most prudent, pray for us.\nVirgin most venerable, pray for us.\nVirgin most renowned, pray for us.\nVirgin most powerful, pray for us.\nVirgin most merciful, pray for us.\nVirgin most faithful, pray for us.\n\nMirror of justice, pray for us.\nSeat of wisdom, pray for us.\nCause of our joy, pray for us.\nSpiritual vessel, pray for us.\nVessel of honor, pray for us.\nMystical rose, pray for us.\nTower of David, pray for us.\nTower of ivory, pray for us.\nHouse of gold, pray for us.\nArk of the covenant, pray for us.\nGate of heaven, pray for us.\nMorning star, pray for us.\n\nHealth of the sick, pray for us.\nRefuge of sinners, pray for us.\nComforter of migrants, pray for us.\nComforter of the afflicted, pray for us.\nHelp of Christians, pray for us.\n\nQueen of Angels, pray for us.\nQueen of Patriarchs, pray for us.\nQueen of Prophets, pray for us.\nQueen of Apostles, pray for us.\nQueen of Martyrs, pray for us.\nQueen of all Saints, pray for us.\nQueen conceived without original sin, pray for us.\nQueen of families, pray for us.\nQueen of peace, pray for us.\n\nLamb of God, who takest away the sins of the world, spare us, O Lord.\nLamb of God, who takest away the sins of the world, graciously hear us, O Lord.\nLamb of God, who takest away the sins of the world, have mercy on us."
+};
+
+let rosaryState = {
+  cross:false, credo:false, padreInicial:false, aves3:[false,false,false], gloriaInicial:false,
+  decades:[], salve:false, final:false, crossFinal:false
+};
+for(let i=0;i<5;i++){ rosaryState.decades.push({padre:false, aves:new Array(10).fill(false), gloria:false, ohJesus:false}); }
+let letaniasOpen = false;
+
+function todaysMystery(){
+  const day = new Date().getDay(); // 0 sun .. 6 sat
+  if(day===1 || day===6) return 'gozosos';
+  if(day===2 || day===5) return 'dolorosos';
+  if(day===3 || day===0) return 'gloriosos';
+  return 'luminosos';
+}
+
+function renderRosaryScreen(){
+  currentMystery = todaysMystery();
+  renderMysteryTabs();
+  renderMysteryList();
+  renderRosaryChain();
+  updateRosaryProgress();
+  document.getElementById('letanias-inner').textContent = T(LETANIAS_TEXT);
+}
+function renderMysteryTabs(){
+  const wrap = document.getElementById('mystery-tabs');
+  wrap.innerHTML = Object.keys(MYSTERIES).map(k => `
+    <button class="mystery-tab ${k===currentMystery?'active':''}" onclick="selectMystery('${k}')">${T(MYSTERIES[k].label)}</button>
+  `).join('');
+}
+function selectMystery(k){
+  currentMystery = k;
+  renderMysteryTabs();
+  renderMysteryList();
+}
+function renderMysteryList(){
+  const m = MYSTERIES[currentMystery];
+  document.getElementById('mystery-list').innerHTML = `
+    <div class="m-title">${T(UI.mysteriesHint)(T(m.label), T(m.days))}</div>
+    <ol>${m.items.map((i,idx)=>`<li class="mystery-item" onclick="openMystery('${currentMystery}',${idx})">${T(i.t)}</li>`).join('')}</ol>
+  `;
+}
+function openMystery(mysteryKey, idx){
+  const item = MYSTERIES[mysteryKey].items[idx];
+  showInfoModal(T(item.t), T(item.b), 'rose');
+}
+function openRosaryText(key){
+  const r = ROSARY_TEXTS[key];
+  showInfoModal(T(r.title), T(r.text), 'rose');
+}
+
+function stepLabel(textKeyDict, key){
+  return `<div class="rc-steplabel">${T(textKeyDict)} <span class="rc-verlink" onclick="openRosaryText('${key}')">${T(UI.verOracion)}</span></div>`;
+}
+
+function renderRosaryChain(){
+  let html = '';
+
+  html += `<div class="rc-cross ${rosaryState.cross?'filled':''}" onclick="toggleCross()"><div class="bar1"></div><div class="bar2"></div></div>`;
+  html += `<div class="rc-steplabel">${T(UI.signCross)}</div>`;
+
+  html += `<div class="rbead rbead-lg ${rosaryState.credo?'filled':''}" onclick="toggleSimple('credo')"></div>`;
+  html += stepLabel(UI.credoLabel,'credo');
+
+  html += `<div class="rbead rbead-lg ${rosaryState.padreInicial?'filled':''}" onclick="toggleSimple('padreInicial')"></div>`;
+  html += stepLabel(UI.padreNuestroLabel,'padrenuestro');
+
+  html += `<div class="decade-row">`;
+  rosaryState.aves3.forEach((v,i)=>{
+    html += `<div class="rbead rbead-lg ${v?'filled':''}" onclick="toggleAve3(${i})"></div>`;
+  });
+  html += `</div>`;
+  html += stepLabel(UI.tresAve,'avemaria');
+
+  html += `<div class="rbead rbead-lg ${rosaryState.gloriaInicial?'filled':''}" onclick="toggleSimple('gloriaInicial')"></div>`;
+  html += stepLabel(UI.gloriaLabel,'gloria');
+
+  rosaryState.decades.forEach((dec, di)=>{
+    html += `<div class="decade-block">`;
+    html += `<div class="decade-label">${T(UI.misterioLabel)} ${di+1} · ${T(MYSTERIES[currentMystery].items[di].t)}</div>`;
+    html += `<div class="rbead rbead-lg ${dec.padre?'filled':''}" onclick="toggleDecadePadre(${di})"></div>`;
+    html += `<div class="decade-row">`;
+    dec.aves.forEach((v,ai)=>{
+      html += `<div class="rbead rbead-sm ${v?'filled':''}" onclick="toggleDecadeAve(${di},${ai})"></div>`;
+    });
+    html += `</div>`;
+    html += `<div class="rbead rbead-lg ${dec.gloria?'filled':''}" onclick="toggleDecadeGloria(${di})"></div>`;
+    html += `<div class="rbead rbead-md ${dec.ohJesus?'filled':''}" onclick="toggleDecadeOhJesus(${di})"></div>`;
+    html += `<div class="rc-steplabel-sm">${T(UI.decadeSteps)} <span class="rc-verlink" onclick="openRosaryText('ohjesus')">${T(UI.ohJesusLink)}</span></div>`;
+    html += `</div>`;
+  });
+
+  html += `<div class="decade-block">`;
+  html += `<div class="decade-label">${T(UI.cierre)}</div>`;
+  html += `<div class="rbead rbead-lg ${rosaryState.salve?'filled':''}" onclick="toggleSimple('salve')"></div>`;
+  html += stepLabel(UI.salveLabel,'salve');
+  html += `<div class="rbead rbead-lg ${rosaryState.final?'filled':''}" onclick="toggleSimple('final')"></div>`;
+  html += stepLabel(UI.finalLabel,'final');
+  html += `<div class="rc-cross ${rosaryState.crossFinal?'filled':''}" onclick="toggleSimple('crossFinal')" style="margin-top:6px"><div class="bar1"></div><div class="bar2"></div></div>`;
+  html += `<div class="rc-steplabel">${T(UI.signCrossClose)}</div>`;
+  html += `</div>`;
+
+  if(isRosaryComplete()){
+    html += `<div class="rosary-complete">${T(UI.completeMsg)}</div>`;
+  }
+
+  document.getElementById('rosary-chain').innerHTML = html;
+}
+
+function toggleCross(){ rosaryState.cross = !rosaryState.cross; renderRosaryChain(); updateRosaryProgress(); }
+function toggleSimple(key){ rosaryState[key] = !rosaryState[key]; renderRosaryChain(); updateRosaryProgress(); }
+function toggleAve3(i){ rosaryState.aves3[i] = !rosaryState.aves3[i]; renderRosaryChain(); updateRosaryProgress(); }
+function toggleDecadePadre(di){ rosaryState.decades[di].padre = !rosaryState.decades[di].padre; renderRosaryChain(); updateRosaryProgress(); }
+function toggleDecadeAve(di,ai){ rosaryState.decades[di].aves[ai] = !rosaryState.decades[di].aves[ai]; renderRosaryChain(); updateRosaryProgress(); }
+function toggleDecadeGloria(di){ rosaryState.decades[di].gloria = !rosaryState.decades[di].gloria; renderRosaryChain(); updateRosaryProgress(); }
+function toggleDecadeOhJesus(di){ rosaryState.decades[di].ohJesus = !rosaryState.decades[di].ohJesus; renderRosaryChain(); updateRosaryProgress(); }
+
+function isRosaryComplete(){
+  const allDecades = rosaryState.decades.every(d => d.padre && d.gloria && d.ohJesus && d.aves.every(Boolean));
+  return rosaryState.cross && rosaryState.credo && rosaryState.padreInicial && rosaryState.aves3.every(Boolean) &&
+    rosaryState.gloriaInicial && allDecades && rosaryState.salve && rosaryState.final && rosaryState.crossFinal;
+}
+
+function updateRosaryProgress(){
+  let total = 1 + 1 + 1 + 3 + 1 + 5*(1+10+1+1) + 1 + 1 + 1;
+  let filled = (rosaryState.cross?1:0) + (rosaryState.credo?1:0) + (rosaryState.padreInicial?1:0) +
+    rosaryState.aves3.filter(Boolean).length + (rosaryState.gloriaInicial?1:0) +
+    (rosaryState.salve?1:0) + (rosaryState.final?1:0) + (rosaryState.crossFinal?1:0);
+  rosaryState.decades.forEach(d=>{
+    filled += (d.padre?1:0) + d.aves.filter(Boolean).length + (d.gloria?1:0) + (d.ohJesus?1:0);
+  });
+  document.getElementById('rosary-progress').textContent = T(UI.progress)(filled, total);
+}
+function resetRosary(){
+  rosaryState = {cross:false, credo:false, padreInicial:false, aves3:[false,false,false], gloriaInicial:false, decades:[], salve:false, final:false, crossFinal:false};
+  for(let i=0;i<5;i++){ rosaryState.decades.push({padre:false, aves:new Array(10).fill(false), gloria:false, ohJesus:false}); }
+  renderRosaryChain();
+  updateRosaryProgress();
+}
+function toggleLetanias(){
+  letaniasOpen = !letaniasOpen;
+  document.getElementById('letanias-panel').classList.toggle('open', letaniasOpen);
+  document.getElementById('letanias-toggle-label').textContent = letaniasOpen ? T(UI.letaniasOpen) : T(UI.letaniasClosed);
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.documentElement.setAttribute('lang', LANG);
+document.getElementById('lang-toggle').textContent = (LANG === 'es') ? 'EN' : 'ES';
+renderStaticText();
+</script>
+</body>
+</html>
